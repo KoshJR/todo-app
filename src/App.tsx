@@ -1,41 +1,39 @@
-import { useState, FormEvent } from 'react';
-import TodoList from './TodoList';
-import { Todo } from './types';
-import './App.css'
-
-
-
+import { useState, FormEvent } from "react";
+import TodoList from "./TodoList";
+import "./App.css";
+import { useDispatch } from "react-redux";
+import { addTodo } from "./redux/todoSlice";
 
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const dispatch = useDispatch();
   const [task, setTask] = useState<string>("");
 
-  const addTodo = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (task) {
-      const newTodo: Todo = { id: Date.now(), text: task };
-      setTodos([...todos, newTodo]);
-      setTask("")
+    if (task.trim()) {
+      dispatch(addTodo(task))
+      setTask("");
     }
   };
 
-  const deleteTodo = (id: number): void => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(updatedTodos);
-  }
 
 
   return (
     <div>
       <h1>Todo List</h1>
-      <form onSubmit={addTodo}>
-        <input type="text" value={task} onChange={(e) => setTask(e.target.value)} placeholder='Add a new task' />
-        <button type='submit'>Add Task</button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          placeholder="Add a new task"
+        />
+        <button type="submit">Add Task</button>
       </form>
-      <TodoList todos={todos} deleteTodo={deleteTodo} />
+      <TodoList />
     </div>
-    )
+  );
 }
 
-export default App
+export default App;

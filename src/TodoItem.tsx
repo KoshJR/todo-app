@@ -3,14 +3,14 @@ import { Todo } from './types';
 
 interface TodoItem {
     todo: Todo;
-    deleteTodo: (id: number) => void; 
+    onDelete: (id: number) => void; 
 }
 
-const TodoItem: FC<TodoItem> = ({ todo, deleteTodo }) => {
+const TodoItem: FC<TodoItem> = ({ todo, onDelete }) => {
     return (
         <li>
             {todo.text}
-            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+            <button onClick={() => onDelete(todo.id)}>Delete</button>
         </li>
     )
 }
